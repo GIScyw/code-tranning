@@ -363,3 +363,200 @@ public class Solution {
 
 ```
 
+**给定一个double类型的浮点数base和int类型的整数exponent。求base的exponent次方。**
+
+  本方法思想：如果求10次方用循环做，需要做十次，但是如果我们求5次方的2次方只需要五次即可，9次方=4次方*4次方*本身，所以这就使得我们想到用递归求解，同时要注意负数和0的问题。
+
+![img](https://uploadfiles.nowcoder.com/images/20170907/3270776_1504748011304_B16239181123036ECE974C89CC410F1F)![img](https://uploadfiles.nowcoder.com/files/20170906/3270776_1504711188579_E695B0E580BCE79A84E695B4E695B0E6ACA1E696B9.png)
+
+```javascript
+function Power(x,n){
+    if(n < 0) {
+        if(x <= 0) {
+            throw new Error("分母不能小于等于0");
+        }else {
+            if(-n % 2 == 1) {
+                return 1/(Power(x,-n-1) * x);
+            }else {
+                var r = 1/Power(x,-n/2);
+            return r * r;
+            }
+        }
+    }
+    if(n == 0) {
+        return 1;
+    }
+    else {
+        if(n % 2 == 1) {
+            return Power(x,n-1) * x;
+        }else {
+            var r = Power(x,n/2);
+            return r * r;
+        }
+    }
+    
+}
+```
+
+**输入一个整数数组，实现一个函数来调整该数组中数字的顺序，使得所有的奇数位于数组的前半部分，所有的偶数位于数组的后半部分，并保证奇数和奇数，偶数和偶数之间的相对位置不变。**
+
+```javascript
+function reOrderArray(array)
+{
+    // write code here
+    var arr1=[],arr2=[];
+    for(var i=0;i<array.length;i++){
+        if(array[i]%2!=0){
+            arr1.push(array[i]);
+        }
+        else{
+            arr2.push(array[i]);
+        }
+    }
+    return arr1.concat(arr2);
+}
+```
+
+**输入一个链表，输出该链表中倒数第k个结点。**
+
+```javascript
+/*function ListNode(x){
+    this.val = x;
+    this.next = null;
+}*/
+function FindKthToTail(head, k)
+{
+    var arr = [];
+    while(head!=null){
+        arr.push(head);
+        head = head.next;
+    }
+    return arr[arr.length-k];
+}
+```
+
+**输入两个单调递增的链表，输出两个链表合成后的链表，当然我们需要合成后的链表满足单调不减规则。**
+
+```javascript
+/*function ListNode(x){
+    this.val = x;
+    this.next = null;
+}*/
+function Merge(pHead1, pHead2)
+{
+    // write code here
+    let list = {}
+    if(pHead1 === null){
+        return pHead2;
+    } else if (pHead2 === null) {
+        return pHead1;
+    }
+    if(pHead1 > pHead2){
+        list = pHead2;
+        list.next = Merge(pHead2.next, pHead1);
+    } else {
+        list = pHead1;
+        list.next = Merge(pHead2, pHead1.next)
+    }
+    return list;
+}
+```
+
+**输入两棵二叉树A，B，判断B是不是A的子结构。（ps：我们约定空树不是任意一个树的子结构）**
+
+```javascript
+/* function TreeNode(x) {
+    this.val = x;
+    this.left = null;
+    this.right = null;
+} */
+function isSubtree(root1, root2) {
+    if (root2 == null) return true;
+    if (root1 == null) return false;
+    if (root1.val == root2.val) {
+        return isSubtree(root1.left, root2.left)
+            && isSubtree(root1.right, root2.right);
+    } else {
+        return false; 
+    }
+}
+  
+function HasSubtree(pRoot1, pRoot2)
+{
+   if (pRoot1 == null || pRoot2 == null) {
+       return false;
+   }
+    return isSubtree(pRoot1, pRoot2)
+        || HasSubtree(pRoot1.left, pRoot2)
+        || HasSubtree(pRoot1.right, pRoot2);
+}
+```
+
+**操作给定的二叉树，将其变换为源二叉树的镜像。**
+
+```javascript
+/* function TreeNode(x) {
+    this.val = x;
+    this.left = null;
+    this.right = null;
+} */
+function Mirror(root)
+{
+    // write code here
+    if(root === null) {
+        return;
+    }
+    var temp = root.left;
+    root.left = root.right;
+    root.right = temp;
+    Mirror(root.left);
+    Mirror(root.right);
+}
+```
+
+**定义栈的数据结构，请在该类型中实现一个能够得到栈中所含最小元素的min函数（时间复杂度应为O（1））。**
+
+思路：用一个栈data保存数据，用另外一个栈min保存依次入栈最小的数
+比如，data中依次入栈，5,  4,  3, 8, 10, 11, 12, 1
+       则min依次入栈，5,  4,  3，no,no, no, no, 1
+
+no代表此次不如栈
+每次入栈的时候，如果入栈的元素比min中的栈顶元素小或等于则入栈，否则不如栈。
+
+```javascript
+var stackData = [];
+var stackMin = [];
+function push(node)
+{
+    stackData.push(node);
+    if (stackMin.length ===0 || node <= stackMin[stackMin.length - 1]) {
+        stackMin.push(node);
+        return;
+    }
+}
+function pop()
+{
+    if (stackData.length === 0) {
+        throw new Error('Your stack is empty!');
+    } 
+    var result = stackData.pop();
+    if (result === stackMin[stackMin.length - 1]) {
+        stackMin.pop();
+    }
+    // write code here
+}
+function top()
+{
+    return stackData[stackData.length - 1];
+    // write code here
+}
+function min()
+{
+    if (stackData.length === 0) {
+        throw new Error('Your stack is empty!');
+    } 
+    return stackMin[stackMin.length - 1];
+    // write code here
+}
+```
+
