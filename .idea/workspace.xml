@@ -3,7 +3,6 @@
   <component name="ChangeListManager">
     <list default="true" id="95aa9d73-04fd-4147-9787-feadff6c976b" name="Default Changelist" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/README.md" beforeDir="false" afterPath="$PROJECT_DIR$/README.md" afterDir="false" />
     </list>
     <ignored path="$PROJECT_DIR$/.tmp/" />
     <ignored path="$PROJECT_DIR$/temp/" />
@@ -20,7 +19,7 @@
         <entry file="file://$PROJECT_DIR$/code-trainning.md">
           <provider selected="true" editor-type-id="split-provider[text-editor;markdown-preview-editor]">
             <state split_layout="SPLIT">
-              <first_editor relative-caret-position="-132" />
+              <first_editor relative-caret-position="-66" />
               <second_editor />
             </state>
           </provider>
@@ -31,11 +30,11 @@
   <component name="Git.Settings">
     <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
   </component>
-  <component name="ProjectFrameBounds" extendedState="7">
-    <option name="x" value="128" />
-    <option name="y" value="-908" />
-    <option name="width" value="1616" />
-    <option name="height" value="876" />
+  <component name="ProjectFrameBounds" extendedState="6">
+    <option name="x" value="-11" />
+    <option name="y" value="-11" />
+    <option name="width" value="1943" />
+    <option name="height" value="1043" />
   </component>
   <component name="ProjectLevelVcsManager" settingsEditedManually="true" />
   <component name="ProjectView">
@@ -88,11 +87,13 @@
       <updated>1561727497312</updated>
       <workItem from="1561727501299" duration="81000" />
       <workItem from="1561802233753" duration="1292000" />
+      <workItem from="1561821000082" duration="1207000" />
+      <workItem from="1561960816219" duration="128000" />
     </task>
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="1373000" />
+    <option name="totallyTimeSpent" value="2708000" />
   </component>
   <component name="TodoView">
     <todo-panel id="selected-file">
@@ -104,9 +105,10 @@
     </todo-panel>
   </component>
   <component name="ToolWindowManager">
-    <frame x="128" y="-908" width="1616" height="876" extended-state="7" />
+    <frame x="-7" y="-7" width="1295" height="695" extended-state="6" />
+    <editor active="true" />
     <layout>
-      <window_info content_ui="combo" id="Project" order="0" visible="true" weight="0.2263792" />
+      <window_info content_ui="combo" id="Project" order="0" visible="true" weight="0.28400955" />
       <window_info id="Structure" order="1" side_tool="true" weight="0.25" />
       <window_info id="Favorites" order="2" side_tool="true" />
       <window_info anchor="bottom" id="Message" order="0" />
@@ -115,7 +117,7 @@
       <window_info anchor="bottom" id="Debug" order="3" weight="0.4" />
       <window_info anchor="bottom" id="Cvs" order="4" weight="0.25" />
       <window_info anchor="bottom" id="Inspection" order="5" weight="0.4" />
-      <window_info active="true" anchor="bottom" id="TODO" order="6" visible="true" weight="0.3292683" />
+      <window_info active="true" anchor="bottom" id="TODO" order="6" visible="true" weight="0.11827957" />
       <window_info anchor="bottom" id="Docker" order="7" show_stripe_button="false" />
       <window_info anchor="bottom" id="Version Control" order="8" />
       <window_info anchor="bottom" id="Terminal" order="9" />
@@ -132,7 +134,7 @@
     <entry file="file://$PROJECT_DIR$/code-trainning.md">
       <provider selected="true" editor-type-id="split-provider[text-editor;markdown-preview-editor]">
         <state split_layout="SPLIT">
-          <first_editor relative-caret-position="-132" />
+          <first_editor relative-caret-position="-66" />
           <second_editor />
         </state>
       </provider>
