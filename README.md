@@ -707,3 +707,391 @@ function sub(node,arr){
 **HZ偶尔会拿些专业问题来忽悠那些非计算机专业的同学。今天测试组开完会后,他又发话了:在古老的一维模式识别中,常常需要计算连续子向量的最大和,当向量全为正数的时候,问题很好解决。但是,如果向量中包含负数,是否应该包含某个负数,并期望旁边的正数会弥补它呢？例如:{6,-3,-2,7,-15,1,2,2},连续子向量的最大和为8(从第0个开始,到第3个为止)。给一个数组，返回它的最大连续子序列的和，你会不会被他忽悠住？(子向量的长度至少是1)**
 
 <https://blog.csdn.net/iteye_11788/article/details/82550236>
+
+**输入一个字符串,按字典序打印出该字符串中字符的所有排列。例如输入字符串abc,则打印出由字符a,b,c所能排列出来的所有字符串abc,acb,bac,bca,cab和cba。**
+
+<https://www.cnblogs.com/cxjchen/p/3932949.html>
+
+正常人的思维是，固定第一个字符，然后依次将后面的字符串与前面的交换，那么排列的个数就是除了第一个字符以外，其他字符的排列个数+1。
+
+也就是固定一个字符串之后，之后再将问题变小，只需求出后面子串的排列个数就可以得出结果，当然第一时间想到的就是递归的算法了。
+
+下面这张图很清楚的给出了递归的过程：
+
+很明显，递归的出口，就是只剩一个字符的时候，递归的循环过程，就是从每个子串的第二个字符开始依次与第一个字符交换，然后继续处理子串。
+
+还有一个问题要注意，就是如果字符串中有重复的字符串
+
+由于全排列就是从第一个数字起，每个数分别与它后面的数字交换，我们先尝试加个这样的判断——如果一个数与后面的数字相同那么这两个数就不交换 了。例如abb，第一个数与后面两个数交换得bab，bba。然后abb中第二个数和第三个数相同，就不用交换了。但是对bab，第二个数和第三个数不 同，则需要交换，得到bba。由于这里的bba和开始第一个数与第三个数交换的结果相同了，因此这个方法不行。
+
+换种思维，对abb，第一个数a与第二个数b交换得到bab，然后考虑第一个数与第三个数交换，此时由于第三个数等于第二个数，所以第一个数就不再用与第三个数交换了。再考虑bab，它的第二个数与第三个数交换可以解决bba。此时全排列生成完毕！
+
+
+
+这样，我们得到在全排列中去掉重复的规则：
+
+去重的全排列就是从第一个数字起，每个数分别与它后面非重复出现的数字交换。
+
+ ```c
+#include <stdio.h>
+
+static int count = 0;
+
+void swap(char* str,int a,int b)
+{
+    char tmp = str[a];
+    str[a] = str[b];
+    str[b] = tmp;
+}
+
+
+int is_swap(char *str, int begin, int k){   //判断从子串的第一个字符串开始，直到k-1位置，看是否有重复的字符
+    int i, flag;
+
+    for (i = begin, flag = 1; i < k; i ++) {
+        if (str[i] == str[k]) {
+            flag = 0;
+            break;
+        }
+    }
+
+    return flag;
+}
+
+void full_permutation(char* str,int begin,int end)
+{
+    if (begin == end)
+    {
+        count++;//此处可以输出字符串或者记录字符串
+        return;
+    }else{
+        int i;
+        for (i = begin; i <= end; i++)
+        {
+            if (is_swap(str,begin,i))
+            {
+                swap(str,begin,i);
+                full_permutation(str,begin+1,end);
+                swap(str,begin,i);
+            }
+        }
+    }
+}
+
+int main()
+{
+    char str[7] = {'a','l','i','b','a','b','a'};
+    full_permutation(str,0,6);
+    printf("count=%d",count);
+    return 0;
+}
+ ```
+
+```javascript
+var result = [];
+function Permutation(str){
+    result = []
+    if(str.length<=0) return result;
+    var sortTmp = "";
+    var arr = str.split("");
+    result = sortString(arr,sortTmp)
+    return result;
+}
+ 
+function sortString(arr,sortTmp){
+    if(arr.length ==0 ){
+        result.push(sortTmp);
+    }else{
+        var isRepeated = {}
+        for(var i = 0; i<arr.length; i++){
+            if(!isRepeated[arr[i]]){
+                var p = arr.splice(i,1)[0];
+                sortTmp += p;
+                sortString(arr,sortTmp);
+                arr.splice(i,0,p); //恢复字符串
+                sortTmp = sortTmp.slice(0,sortTmp.length-1);
+                isRepeated[p] = true;
+            }
+        }
+    }
+    return result;
+}
+```
+
+**一个整型数组里除了两个数字之外，其他的数字都出现了两次。请写程序找出这两个只出现一次的数字。**
+
+```javascript
+function FindNumsAppearOnce(array)
+{
+    // write code here
+    // return list, 比如[a,b]，其中ab是出现一次的两个数字
+    var arr = [];
+    for(var i = 0; i < array.length; i++) {
+        if(array.indexOf(array[i]) === array.lastIndexOf(array[i])) {
+            arr.push(array[i]);
+        }
+    }
+    return arr;
+}
+```
+
+**输入一棵二叉树，判断该二叉树是否是平衡二叉树。**
+
+```javascript
+function TreeNode(x) {
+    this.val = x;
+    this.left = null;
+    this.right = null;
+}
+var isBalanced = true;
+function IsBalanced_Solution(pRoot){
+    if(pRoot == null){
+        return true;
+    }
+    IsBalanced(pRoot);
+    var result = isBalanced;
+    isBalanced = true;
+    return result;
+}
+function IsBalanced(pRoot){
+    if(pRoot == null){
+        return 0;
+    }
+    var left = 0,
+        right = 0;
+    if(pRoot.left){
+        left = IsBalanced(pRoot.left);
+    }
+    if(pRoot.right){
+        right = IsBalanced(pRoot.right);
+    }
+    if(Math.abs(left - right) > 1){
+        isBalanced = false;
+    }
+    return left > right ? left + 1 : right + 1;
+}
+```
+
+**统计一个数字在排序数组中出现的次数。**
+
+```javascript
+function GetNumberOfK(data, k)
+{
+    var count = 0;
+    var idx = data.indexOf(k);
+    while(data[idx]==k){
+        count++;
+        idx++;
+    }
+    return count;
+}
+```
+
+**输入两个链表，找出它们的第一个公共结点。**
+
+```javascript
+/*function ListNode(x){
+    this.val = x;
+    this.next = null;
+}*/
+function FindFirstCommonNode(pHead1, pHead2)
+{
+    var p1=pHead1;
+    var p2=pHead2;
+    while(p1!=p2){
+        p1=p1==null?pHead2:p1.next;
+        p2=p2==null?pHead1:p2.next;
+    }
+    return p1;
+}
+```
+
+**每年六一儿童节,牛客都会准备一些小礼物去看望孤儿院的小朋友,今年亦是如此。HF作为牛客的资深元老,自然也准备了一些小游戏。其中,有个游戏是这样的:首先,让小朋友们围成一个大圈。然后,他随机指定一个数m,让编号为0的小朋友开始报数。每次喊到m-1的那个小朋友要出列唱首歌,然后可以在礼品箱中任意的挑选礼物,并且不再回到圈中,从他的下一个小朋友开始,继续0...m-1报数....这样下去....直到剩下最后一个小朋友,可以不用表演,并且拿到牛客名贵的“名侦探柯南”典藏版(名额有限哦!!^_^)。请你试着想下,哪个小朋友会得到这份礼品呢？(注：小朋友的编号是从0到n-1)**
+
+如果只求最后一个报数胜利者的话，我们可以用数学归纳法解决该问题，为了讨      论方便，先把问题稍微改变一下，并不影响原意：
+
+ 问题描述：n个人（编号0~(n-1))，从0开始报数，报到(m-1)的退出，剩下的人 继续从0开始报数。求胜利者的编号。
+
+ 我们知道第一个人(编号一定是m%n-1) 出列之后，剩下的n-1个人组成了一个新      的约瑟夫环（以编号为k=m%n的人开始）:
+
+        k  k+1  k+2  ... n-2, n-1, 0, 1, 2, ... k-2并且从k开始报0。
+
+现在我们把他们的编号做一下转换：
+
+k     --> 0
+
+k+1   --> 1
+
+k+2   --> 2
+
+...
+
+...
+
+k-2   --> n-2
+
+k-1   --> n-1
+
+变换后就完完全全成为了(n-1)个人报数的子问题，假如我们知道这个子问题的解： 例如x是最终的胜利者，那么根据上面这个表把这个x变回去不刚好就是n个人情 况的解吗？！！变回去的公式很简单，相信大家都可以推出来：x'=(x+k)%n。
+
+令f[i]表示i个人玩游戏报m退出最后胜利者的编号，最后的结果自然是f[n]。
+
+递推公式
+
+f[1]=0;
+
+f[i]=(f[i-1]+m)%i;  (i>1)
+
+有了这个公式，我们要做的就是从1-n顺序算出f[i]的数值，最后结果是f[n]。 因为实际生活中编号总是从1开始，我们输出f[n]+1。
+
+```javascript
+function LastRemaining_Solution(n, m)
+{
+    // write code here
+    if(n == 0){
+        return -1;
+    }
+    if(n == 1){
+        return 0;
+    }else{
+        return (LastRemaining_Solution(n - 1, m) + m) % n;
+    }
+     
+}
+```
+
+**LL今天心情特别好,因为他去买了一副扑克牌,发现里面居然有2个大王,2个小王(一副牌原本是54张^_^)...他随机从中抽出了5张牌,想测测自己的手气,看看能不能抽到顺子,如果抽到的话,他决定去买体育彩票,嘿嘿！！“红心A,黑桃3,小王,大王,方片5”,“Oh My God!”不是顺子.....LL不高兴了,他想了想,决定大\小 王可以看成任何数字,并且A看作1,J为11,Q为12,K为13。上面的5张牌就可以变成“1,2,3,4,5”(大小王分别看作2和4),“So Lucky!”。LL决定去买体育彩票啦。 现在,要求你使用这幅牌模拟上面的过程,然后告诉我们LL的运气如何， 如果牌能组成顺子就输出true，否则就输出false。为了方便起见,你可以认为大小王是0。**
+
+思路：
+
+1）没有大小王的时候即判断数是否连续；
+
+2）有大小王的时候，判断数的间隔是否小于王的数量。小于返回true，大于返回false；
+
+3）有相等的牌则直接返回false。
+
+```java
+import java.util.*;
+public class Solution {
+    public boolean isContinuous(int [] numbers) {
+        if(numbers == null || numbers.length <= 4)
+            return false;
+         
+        //先排序，否则计算间隔的时候可能会出现负值，比较麻烦
+        Arrays.sort(numbers);
+        int totalGap = 0;
+        //计算大小王的数量
+        int countZero = 0;
+        for(int i = 0; i < numbers.length; i++){
+            if(numbers[i] == 0){
+                countZero++;
+                continue;
+            }
+            //计算两数之间的间隔
+            if(i < numbers.length - 1){
+                int gap = numbers[i + 1] - numbers[i] - 1;
+                //如果出现对子，如2 2，则gap为-1，直接返回false
+                if(gap < 0)
+                    return false;
+                totalGap += gap;
+            }
+        }
+        //所有数间隔大于王数量，就返回false
+        if(totalGap > countZero){
+            return false;
+        }
+        return true;
+    }
+}
+```
+
+**牛客最近来了一个新员工Fish，每天早晨总是会拿着一本英文杂志，写些句子在本子上。同事Cat对Fish写的内容颇感兴趣，有一天他向Fish借来翻看，但却读不懂它的意思。例如，“student. a am I”。后来才意识到，这家伙原来把句子单词的顺序翻转了，正确的句子应该是“I am a student.”。Cat对一一的翻转这些单词顺序可不在行，你能帮助他么？**
+
+```javascript
+function ReverseSentence(str)
+{
+    return str.split(" ").reverse().join(" ");
+}
+```
+
+**汇编语言中有一种移位指令叫做循环左移（ROL），现在有个简单的任务，就是用字符串模拟这个指令的运算结果。对于一个给定的字符序列S，请你把其循环左移K位后的序列输出。例如，字符序列S=”abcXYZdef”,要求输出循环左移3位后的结果，即“XYZdefabc”。是不是很简单？OK，搞定它！**
+
+```javascript
+function LeftRotateString(str, n)
+{
+    if(str==null||str.length==0){
+        return "";
+    }
+    n=n%str.length;
+    return str.slice(n)+str.slice(0,n);   
+}
+```
+
+**输入一个递增排序的数组和一个数字S，在数组中查找两个数，使得他们的和正好是S，如果有多对数字的和等于S，输出两个数的乘积最小的。**
+
+数列满足递增，设两个头尾两个指针i和j，
+
+若ai + aj == sum，就是答案（相差越远乘积越小）
+
+若ai + aj > sum，aj肯定不是答案之一（前面已得出 i 前面的数已是不可能），j -= 1
+
+若ai + aj < sum，ai肯定不是答案之一（前面已得出 j 后面的数已是不可能），i += 1
+
+```java
+typedef vector<int> vi;
+class Solution {
+public:
+    vi FindNumbersWithSum(const vi& a,int sum) {
+        vi res;
+        int n = a.size();
+        int i = 0, j = n - 1;
+        while(i < j){
+            if(a[i] + a[j] == sum){
+                res.push_back(a[i]);
+                res.push_back(a[j]);
+                break;
+            }
+            while(i < j && a[i] + a[j] > sum) --j;
+            while(i < j && a[i] + a[j] < sum) ++i;
+        }
+        return res;
+    }
+};
+```
+
+**小明很喜欢数学,有一天他在做数学作业时,要求计算出9~16的和,他马上就写出了正确答案是100。但是他并不满足于此,他在想究竟有多少种连续的正数序列的和为100(至少包括两个数)。没多久,他就得到另一组连续正数和为100的序列:18,19,20,21,22。现在把问题交给你,你能不能也很快的找出所有和为S的连续正数序列? Good Luck!**
+
+在答案区找到一个答案，说的很好，叫做双指针技术，就是相当于有一个窗口，窗口的左右两边就是两个指针，我们根据窗口内值之和来确定窗口的位置和宽度。非常牛逼的思路，虽然双指针或者所谓的滑动窗口技巧还是蛮常见的，但是这一题还真想不到这个思路。
+
+```javascript
+import java.util.ArrayList;
+public class Solution {
+    public ArrayList<ArrayList<Integer> > FindContinuousSequence(int sum) {
+        //存放结果
+        ArrayList<ArrayList<Integer> > result = new ArrayList<>();
+        //两个起点，相当于动态窗口的两边，根据其窗口内的值的和来确定窗口的位置和大小
+        int plow = 1,phigh = 2;
+        while(phigh > plow){
+            //由于是连续的，差为1的一个序列，那么求和公式是(a0+an)*n/2
+            int cur = (phigh + plow) * (phigh - plow + 1) / 2;
+            //相等，那么就将窗口范围的所有数添加进结果集
+            if(cur == sum){
+                ArrayList<Integer> list = new ArrayList<>();
+                for(int i=plow;i<=phigh;i++){
+                    list.add(i);
+                }
+                result.add(list);
+                plow++;
+            //如果当前窗口内的值之和小于sum，那么右边窗口右移一下
+            }else if(cur < sum){
+                phigh++;
+            }else{
+            //如果当前窗口内的值之和大于sum，那么左边窗口右移一下
+                plow++;
+            }
+        }
+        return result;
+    }
+}
+```
+
